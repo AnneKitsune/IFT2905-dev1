@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">IFT2905-dev1</string>
+
+    <string name="msgRepos">Cliquer sur le bouton pour commencer</string>
+    <string name="msgGrey">Attendre que le bouton devienne jaune</string>
+    <string name="msgYellow">Cliquer maintenant!</string>
+    <string name="msgGreen">Bon travail!</string>
+    <string name="msgRed">Il faut attendre que le bouton soit devenue jaune</string>
+    <string name="popup_title">Test completé</string>
+    <string name="popup_content">Test completé</string>
 </resources>

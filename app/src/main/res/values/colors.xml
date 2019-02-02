@@ -4,9 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="grey">#AAAAAA</color>
-    <color name="red">#FF0000</color>
-    <color name="yellow">#FFFF00</color>
-    <color name="green">#00BB00</color>
+    <color name="buttonGrey">#AAAAAA</color>
+    <color name="buttonRed">#FF0000</color>
+    <color name="buttonYellow">#FFFF00</color>
+    <color name="buttonGreen">#00BB00</color>
 
 </resources>
