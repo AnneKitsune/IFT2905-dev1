@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
     Handler timer;
 
     boolean is_blinking;
-    boolean is_bright;
+    int compter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         but.setBackgroundColor(getResources().getColor(R.color.neutral));
         is_blinking = false;
-        is_bright = false;
+        compter = 0;
     }
 
     View.OnClickListener buttonListener = new View.OnClickListener(){
@@ -34,14 +34,14 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             if(is_blinking){
                 // Le clignotement est activé: Le désactiver
-                but.setText(R.string.activer);
+                but.setText(R.string.activer2);
                 is_blinking = false;
 
                 timer.removeCallbacks(timer_listener);
                 but.setBackgroundColor(getResources().getColor(R.color.neutral));
             }else{
                 // Le clignotement est désactivé: L'activer
-                but.setText(R.string.message);
+                but.setText(R.string.activer3);
                 is_blinking = true;
 
                 timer_listener.run();
@@ -53,12 +53,12 @@ public class MainActivity extends AppCompatActivity {
     Runnable timer_listener = new Runnable() {
         @Override
         public void run() {
-            if(is_bright){
+            if(compter<5){
                 but.setBackgroundColor(getResources().getColor(R.color.neutral));
-                is_bright = false;
+                compter ++;
             }else{
                 but.setBackgroundColor(getResources().getColor(R.color.bright));
-                is_bright = true;
+                but.setText(R.string.message);
             }
 
             timer.postDelayed(timer_listener, 1000);
