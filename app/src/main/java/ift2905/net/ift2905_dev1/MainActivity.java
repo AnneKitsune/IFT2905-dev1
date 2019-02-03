@@ -53,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
     Runnable timer_listener = new Runnable() {
         @Override
         public void run() {
-            if(compter<5){
-                but.setBackgroundColor(getResources().getColor(R.color.neutral));
+            if(compter<=5){
+                but.setBackgroundColor(getResources().getColor(R.color.yellow));
                 compter ++;
             }else{
-                but.setBackgroundColor(getResources().getColor(R.color.bright));
+                but.setBackgroundColor(getResources().getColor(R.color.yellow));
                 but.setText(R.string.message);
             }
 
