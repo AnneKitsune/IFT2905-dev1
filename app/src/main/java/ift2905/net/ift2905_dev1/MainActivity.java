@@ -7,6 +7,10 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
     Button but;
+
+    boolean is_blinking;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
