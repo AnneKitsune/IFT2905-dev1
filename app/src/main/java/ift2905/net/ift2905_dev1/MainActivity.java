@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.os.Handler;
 import android.widget.TextView;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     Button but;
@@ -60,7 +61,13 @@ public class MainActivity extends AppCompatActivity {
     Runnable timer_listener = new Runnable() {
         @Override
         public void run() {
-            if(compter<5){
+            if(compter <5){
+
+                //creer random delay
+                //Random rand = new Random();
+                //int wait = rand.nextInt(3000);
+                //timer.postDelayed(timer_listener, 3000);
+
                 but.setBackgroundColor(getResources().getColor(R.color.yellow));
 
                 compter ++;
@@ -85,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-            timer.postDelayed(timer_listener, 3000);
         }
     };
 }
