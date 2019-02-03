@@ -1,5 +1,9 @@
 package ift2905.net.ift2905_dev1;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tv2;
     boolean is_blinking;
     int compter;
+    double tempsMoyen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         but.setBackgroundColor(getResources().getColor(R.color.neutral));
         is_blinking = false;
         compter = 1;
+        tempsMoyen = 0;
     }
 
     View.OnClickListener buttonListener = new View.OnClickListener(){
@@ -54,13 +60,29 @@ public class MainActivity extends AppCompatActivity {
     Runnable timer_listener = new Runnable() {
         @Override
         public void run() {
-            if(compter<=5){
+            if(compter<5){
                 but.setBackgroundColor(getResources().getColor(R.color.yellow));
 
                 compter ++;
             }else{
-                but.setBackgroundColor(getResources().getColor(R.color.yellow));
-                but.setText(R.string.message);
+
+                //code de demo2
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle(R.string.titre)
+                        .setMessage("Temps de réaction moyen : "+tempsMoyen)
+                        .setPositiveButton(
+                                getString(android.R.string.ok),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Uri uri = Uri.parse("http://umontreal.ca");
+                                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                        startActivity(intent);
+                                    }
+                                }
+                        )
+                        .show();
+
             }
 
             timer.postDelayed(timer_listener, 3000);
