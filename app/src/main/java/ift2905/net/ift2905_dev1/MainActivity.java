@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         but = (Button)findViewById(R.id.button);
         but.setOnClickListener(buttonListener);
 
-        b1.setBackgroundColor(getResources().getColor(R.color.neutral));
+        but.setBackgroundColor(getResources().getColor(R.color.neutral));
     }
 
     View.OnClickListener buttonListener = new View.OnClickListener(){
@@ -23,14 +23,14 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             if(is_blinking){
                 // Le clignotement est activé: Le désactiver
-                b1.setText(R.string.activer);
+                but.setText(R.string.activer);
                 is_blinking = false;
 
                 timer.removeCallbacks(timer_listener);
-                b1.setBackgroundColor(getResources().getColor(R.color.neutral));
+                but.setBackgroundColor(getResources().getColor(R.color.neutral));
             }else{
                 // Le clignotement est désactivé: L'activer
-                b1.setText(R.string.desactiver);
+                but.setText(R.string.desactiver);
                 is_blinking = true;
 
                 timer_listener.run();
