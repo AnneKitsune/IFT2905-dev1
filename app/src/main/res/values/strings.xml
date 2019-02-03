@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">IFT2905-dev1</string>
+    <string name="activer">CLIQUER SUR LE BOUTTON POUR COMMENCER</string>
+    <string name="activer2">Attendre que le boutton devienne jaune...</string>
+    <string name="activer3">CLIQUER MAINTENANT!</string>
+    <string name="activer4">BON TRAVAIL!</string>
+    <string name="activer5">IL FAUT ATTENDRE QUE LE BOUTTON SOIT DEVENU JAUNE AVANT DE CLIQUER!</string>
+
+
+    <string name="desactiver">Désactiver clignotant!</string>
 </resources>
