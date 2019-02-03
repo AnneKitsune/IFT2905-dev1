@@ -7,5 +7,6 @@
     <string name="activer5">IL FAUT ATTENDRE QUE LE BOUTTON SOIT DEVENU JAUNE AVANT DE CLIQUER!</string>
 
 
-    <string name="desactiver">Désactiver clignotant!</string>
+    <string name="message">Test complété</string>
+
 </resources>
