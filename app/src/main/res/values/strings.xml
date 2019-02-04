@@ -7,5 +7,4 @@
     <string name="msgGreen">Bon travail!</string>
     <string name="msgRed">Il faut attendre que le bouton soit devenue jaune</string>
     <string name="popup_title">Test completé</string>
-    <string name="popup_content">Test completé</string>
 </resources>

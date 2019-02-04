@@ -38,9 +38,10 @@
     <Chronometer
         android:id="@+id/chronometer"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="15dp"
         android:layout_marginTop="8dp"
         android:gravity="center_horizontal"
+        android:text="0.000"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
