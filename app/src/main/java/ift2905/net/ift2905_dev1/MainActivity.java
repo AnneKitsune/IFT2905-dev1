@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     boolean canClick = false;
     long testStart = 0;
     Chronometer chrono;
+    // Tracks if the check has been cancelled by pressing too early.
+    boolean cancelled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChronometerTick(Chronometer c) {
                 // Adapté de https://stackoverflow.com/questions/4152569/how-to-change-format-of-chronometer
+                // (juste les multiplications et divisions de temps pour h,m et sec).
 
                 // Le chronomètre est trop lent pour afficher le temps correctement.
                 long time = System.currentTimeMillis() - c.getBase();
@@ -62,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
 
         but.setOnClickListener(buttonListener);
         but.setBackgroundColor(getResources().getColor(R.color.neutral));
+
+        tv2.setVisibility(View.GONE);
+        chrono.setVisibility(View.GONE);
+
         playing = false;
         compter = 0;
         somme = 0;
@@ -78,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
                 but.setBackgroundColor(getResources().getColor(R.color.neutral));
                 chrono.setBase(System.currentTimeMillis());
                 chrono.getOnChronometerTickListener().onChronometerTick(chrono);
+                chrono.setVisibility(View.VISIBLE);
+                tv2.setVisibility(View.VISIBLE);
 
                 //chrono.isTheFinalCountDown() its the final countdown dun dun dun duuuuuuuuuun
 
@@ -88,15 +97,26 @@ public class MainActivity extends AppCompatActivity {
                 //timer_listener.run();
             }else{
                 if(canClick){
+                    canClick = false;
                     playing = false;
                     chrono.stop();
+                    chrono.getOnChronometerTickListener().onChronometerTick(chrono);
+
                     but.setText(R.string.activer);
+
                     somme += (System.currentTimeMillis() - testStart);
 
                     if(compter >= 5){
+                        double avg = somme/5f;
+
+                        compter = 0;
+                        somme = 0;
+                        but.setText(R.string.activer);
+                        chrono.setVisibility(View.GONE);
+
                         new AlertDialog.Builder(MainActivity.this)
                             .setTitle(R.string.titre)
-                            .setMessage("Temps de réaction moyen : "+somme/5f+"ms")
+                            .setMessage("Temps de réaction moyen : "+avg+"ms")
                             .setPositiveButton(
                                     getString(android.R.string.ok),
                                     new DialogInterface.OnClickListener() {
@@ -108,9 +128,16 @@ public class MainActivity extends AppCompatActivity {
                                     }
                             )
                             .show();
-                        compter = 0;
-                        somme = 0;
                     }
+                }else if(!cancelled){
+                    chrono.stop();
+                    chrono.setVisibility(View.GONE);
+                    compter--;
+                    but.setBackgroundColor(getResources().getColor(R.color.red));
+                    but.setText(R.string.activer5);
+                    cancelled = true;
+                    timer.removeCallbacks(timer_listener);
+                    timer.postDelayed(unlockButton, 1500);
                 }
             }
         }
@@ -120,12 +147,25 @@ public class MainActivity extends AppCompatActivity {
     Runnable timer_listener = new Runnable() {
         @Override
         public void run() {
-            canClick = true;
-            but.setText(R.string.activer3);
-            but.setBackgroundColor(getResources().getColor(R.color.yellow));
-            testStart = System.currentTimeMillis();
-            chrono.setBase(testStart);
-            chrono.start();
+            if(!cancelled){
+                canClick = true;
+                but.setText(R.string.activer3);
+                but.setBackgroundColor(getResources().getColor(R.color.yellow));
+                testStart = System.currentTimeMillis();
+                chrono.setBase(testStart);
+                chrono.start();
+            }
+
+        }
+    };
+
+    Runnable unlockButton = new Runnable() {
+        @Override
+        public void run() {
+            playing = false;
+            but.setBackgroundColor(getResources().getColor(R.color.neutral));
+            but.setText(R.string.activer);
+            cancelled = false;
 
         }
     };
