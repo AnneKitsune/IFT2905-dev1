@@ -1,6 +1,8 @@
 package ift2905.net.ift2905_dev1;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -11,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
+
+import java.sql.SQLOutput;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textView;
     Runnable yRunnable;
 
-    int random = 3 + (int)(Math.random() * 8);
+    int random;
     double average = 0;
     static int color;
 
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         button.setText(R.string.msgRepos);
         button.setBackgroundColor(getResources().getColor(R.color.buttonGrey));
 
+
     }
 
 
@@ -61,11 +66,14 @@ public class MainActivity extends AppCompatActivity {
             button.setText(R.string.msgGrey);
             System.out.println("onclick");
 
+            random = 3 + (int)(Math.random() * 8);
+            System.out.println("random value is = " + random);
+
+
+
             color = ((ColorDrawable) button.getBackground()).getColor();
             System.out.println(color);
             while(is_blank) {
-
-
                 switch (color) {
 
                     case -16729344:  // -16729344 = green
@@ -87,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         };
 
-                        delay.schedule(timerTask, 3500);
+                        delay.schedule(timerTask, 1500);
                         System.out.println("number i = " + counter);
 
 
@@ -157,6 +165,11 @@ public class MainActivity extends AppCompatActivity {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
+                                            Intent intent = getIntent();
+                                            finish();
+                                            startActivity(intent);
+
+
                                         }
                                     }
                             )
