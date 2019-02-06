@@ -1,6 +1,7 @@
 package ift2905.net.ift2905_dev1;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button button;
     Chronometer chronometer;
+    //TextView chronometer;
     TextView textView;
     Runnable yRunnable;
 
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.textView);
 
         chronometer = findViewById(R.id.chronometer);
-        chronometer.setVisibility(View.INVISIBLE);
+        chronometer.setVisibility(View.VISIBLE);
 
         button = findViewById(R.id.button);
         button.setOnClickListener(button_listener);
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                                 button.setBackgroundColor(getResources().getColor(R.color.buttonGrey));
                                 button.setText(R.string.msgGrey);
                                 if (counter < 6) {
-                                    chronometer.setText("00:00");
+                                    chronometer.setText("0:000");
                                     textView.setText("Essai " + counter + " de 5");
                                 }
 
@@ -179,5 +181,48 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+//    public void updateTimer(String time) {
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        });
+//    }
+//
+//    public void execute_timer() {
+//        public class Chronometer implements Runnable {
+//            public static final long MillisToMin = 60000;
+//            public static final long MillisToHour = 3600000;
+//
+//            private Context context;
+//            private long startTime;
+//
+//            private boolean misRunning;
+//
+//            public Chronometer(Context c) {
+//                context = c;
+//            }
+//
+//            public void start() {
+//                startTime = System.currentTimeMillis();
+//                misRunning = true;
+//            }
+//
+//            public void stop() {
+//                misRunning = false;
+//            }
+//
+//            @Override
+//            public void run() {
+//                while(misRunning) {
+//                    long elapsedTime = System.currentTimeMillis() - startTime;
+//                    int seconds = (int)(elapsedTime / 1000);
+//                    double millis = elapsedTime % 1000;
+//                }
+//            }
+//        }
+//    }
 }
 
