@@ -1,6 +1,5 @@
 package ift2905.net.ift2905_dev1;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,223 +11,224 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.TextView;
 
-import java.sql.SQLOutput;
+import org.w3c.dom.Text;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    int counter = 1;
-    double timerArray[] = new double[5];
+    public int counter = 1;
+    public TextView tv1;
+    public TextView tv2;
+    public Button btn;
 
-    Handler timer;
+    private Context mContext;
+    private Chronometer mChronometer;
+    private Thread mThreadChrono;
+
     boolean is_blank;
-
-    Button button;
-    TextView tv2;
-    Chronometer chrono;
-    TextView tv1;
-    Runnable yRunnable;
-
     int random;
-    double average = 0;
-    static int color;
+    int color;
+    double average;
+    Handler timer;
+    double timerArray[] = new double[5];
+    static long since;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tv1 = findViewById(R.id.textView);
+        mContext = this;
 
-        tv2 = findViewById(R.id.chronometer);
+        tv1 = findViewById(R.id.textView1);
+
+        tv2 = findViewById(R.id.textView2);
         tv2.setVisibility(View.INVISIBLE);
 
-        button = findViewById(R.id.button);
-        button.setOnClickListener(button_listener);
-        button.setText(R.string.msgRepos);
-        button.setBackgroundColor(getResources().getColor(R.color.buttonGrey));
-
-
+        btn = findViewById(R.id.button);
+        btn.setText(R.string.msgRepos);
+        btn.setOnClickListener(btn_listener);
+        btn.setBackgroundColor(getResources().getColor(R.color.buttonGrey));
     }
 
+    View.OnClickListener btn_listener = new View.OnClickListener() {
 
-    View.OnClickListener button_listener = new View.OnClickListener() {
+
         @Override
         public void onClick(View v) {
 
             is_blank = true;
 
             tv1.setText("Essai " + counter + " de 5");
-
             tv2.setVisibility(View.VISIBLE);
-            button.setText(R.string.msgGrey);
-            System.out.println("onclick");
+            btn.setText(R.string.msgGrey);
 
             random = 3 + (int)(Math.random() * 8);
-            System.out.println("random value is = " + random);
+            //System.out.println("random value is = " + random); on peut calculer du temps qu'on doit attendre
 
+            color = ((ColorDrawable) btn.getBackground()).getColor();
+            //System.out.println(color); par cette couleur, on sait ou on doit aller.
 
-
-            color = ((ColorDrawable) button.getBackground()).getColor();
-            System.out.println(color);
             while(is_blank) {
                 switch (color) {
 
-                    case -16729344:  // -16729344 = green
+                    case -16729344:  // avant de cliquer, l'ecran est vert // -16729344 = green
                         System.out.println("green");
 
                         Timer delay = new Timer();
                         TimerTask timerTask = new TimerTask() {
                             @Override
                             public void run() {
-                                button.setBackgroundColor(getResources().getColor(R.color.buttonGrey));
-                                button.setText(R.string.msgGrey);
+                                btn.setBackgroundColor(getResources().getColor(R.color.buttonGrey));
+                                btn.setText(R.string.msgGrey);
                                 if (counter < 6) {
-                                    tv2.setText("0:000");
+                                    tv2.setText("00:000");
                                     tv1.setText("Essai " + counter + " de 5");
                                 }
-
-                                System.out.println("success1111");
-
                             }
                         };
 
                         delay.schedule(timerTask, 1500);
-                        System.out.println("number i = " + counter);
+                        //System.out.println("number counter = " + counter);  // pour savoir le numero de counter.
 
 
 
-                    case -5592406:   // -5592406 = grey
-                        System.out.println("The color is Yellow!!");
-                        yRunnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                button.setText(R.string.msgYellow);
-                                button.setBackgroundColor(getResources().getColor(R.color.buttonYellow));
-
-                                chrono.start();
-                                //chronometer.setBase(SystemClock.elapsedRealtime());
-                            }
-                        };
+                    case -5592406:   //avant de cliquer, le boutton est gris. // -5592406 = grey
 
                         timer = new Handler();
-                        timer.postDelayed(yRunnable, random * 1000);
-                        color = ((ColorDrawable) button.getBackground()).getColor();
-                        System.out.println(color);
+                        timer.postDelayed(timer_listener, random * 1000);
+                        color = ((ColorDrawable) btn.getBackground()).getColor();
+                        //System.out.println(color);
                         is_blank = false;
                         break;
 
 
+
                     case -256:  // -256 = yellow
-                        button.setText(R.string.msgGreen);
-                        button.setBackgroundColor(getResources().getColor(R.color.buttonGreen));
-                        chrono.stop();
+                        btn.setText(R.string.msgGreen);
+                        btn.setBackgroundColor(getResources().getColor(R.color.buttonGreen));
+                        mChronometer.stop();
 
-                        long elapsed = SystemClock.elapsedRealtime(); //- chronometer.getBase();
-                        timerArray[counter - 1] = (double) elapsed / 1000;
+                        timerArray[counter - 1] = (double) since / 1000;
 
-                        System.out.println("timeArray " + counter + " - 1 = " + timerArray[counter - 1]);
+                        //System.out.println("timeArray " + counter + " - 1 = " + timerArray[counter - 1]);
+                        // pour savoir le temp qu'on clique
 
-                        color = ((ColorDrawable) button.getBackground()).getColor();
-                        System.out.println(color);
+                        color = ((ColorDrawable) btn.getBackground()).getColor();
+                        //System.out.println(color);
                         is_blank = true;
 
                         counter++;
 
                         if (counter > 5) {
-                            System.out.println("no i = " + counter);
                             is_blank = false;
                             break;
                         }
-
-                        //break;
 
                 }
             }
 
             if (counter > 5) {
-                    for(int i = 0; i < 5; i++) {
-                        average += timerArray[i];
-                    }
+                for(int i = 0; i < 5; i++) {
+                    average += timerArray[i];
+                }
+                average = average / 5;
 
-                    average = average / 5;
-
-                    System.out.println("else!!!!!");
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setTitle(R.string.popup_title)
-                            .setMessage("Temps de réaction moyen : " + average)
-                            .setPositiveButton(
-                                    getString(android.R.string.ok),
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                            Intent intent = getIntent();
-                                            finish();
-                                            startActivity(intent);
-
-
-                                        }
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle(R.string.popup_title)
+                        .setMessage("Temps de réaction moyen : " + average)
+                        .setPositiveButton(
+                                getString(android.R.string.ok),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        Intent intent = getIntent();
+                                        finish();
+                                        startActivity(intent);
                                     }
-                            )
-                            .show();
+                                }
+                        )
+                        .show();
             }
-
 
         }
     };
 
-    public void updateTimer(String time) {
+
+
+
+    public void updateTimerText(final String time) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
+                tv2.setText(time);
             }
         });
     }
 
 
     public class Chronometer implements Runnable {
-        public static final long MillisToMin = 60000;
-        public static final long MillisToHour = 3600000;
 
-        private Context context;
-        private long startTime;
+        private Context mContext;
+        private long mStartTime;
 
-        private boolean misRunning;
+        private boolean mIsRunning;
 
-        public Chronometer(Context c) {
-            context = c;
+        public Chronometer(Context context) {
+            mContext = context;
         }
 
         public void start() {
-            startTime = System.currentTimeMillis();
-            misRunning = true;
+            mStartTime = System.currentTimeMillis();
+            mIsRunning = true;
+
         }
 
         public void stop() {
-            misRunning = false;
+            mIsRunning = false;
+            //mChronometer.stop();
+            mThreadChrono.interrupt();
+            mThreadChrono = null;
+            mChronometer = null;
         }
 
         @Override
         public void run() {
-            while(misRunning) {
-                long elapsedTime = System.currentTimeMillis() - startTime;
-                int seconds = (int)(elapsedTime / 1000);
-                int millis = (int)elapsedTime % 1000;
+            while(mIsRunning) {
+                since = System.currentTimeMillis() - mStartTime;
 
-                ((MainActivity)context).updateTimer(String.format(
-                        "%02d:%3d", seconds, millis
+                int seconds = (int) ((since / 1000)) % 60;
+                int millis = (int) (since % 1000);
+
+                ((MainActivity)mContext).updateTimerText(String.format(
+                        "%02d:%03d", seconds, millis
                 ));
-
-
             }
         }
     }
 
+    Runnable timer_listener = new Runnable() {
+        @Override
+        public void run() {
+            btn.setText(R.string.msgYellow);
+            btn.setBackgroundColor(getResources().getColor(R.color.buttonYellow));
+
+            if(mChronometer == null) {
+                mChronometer = new Chronometer(mContext);
+                mThreadChrono = new Thread(mChronometer);
+                mThreadChrono.start();
+                mChronometer.start();
+            }
+        }
+    };
+
 }
+
+
 
