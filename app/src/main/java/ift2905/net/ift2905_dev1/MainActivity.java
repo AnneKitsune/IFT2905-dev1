@@ -28,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
     boolean is_blank;
 
     Button button;
-    Chronometer chronometer;
-    //TextView chronometer;
-    TextView textView;
+    TextView tv2;
+    Chronometer chrono;
+    TextView tv1;
     Runnable yRunnable;
 
     int random;
@@ -42,10 +42,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textView = findViewById(R.id.textView);
+        tv1 = findViewById(R.id.textView);
 
-        chronometer = findViewById(R.id.chronometer);
-        chronometer.setVisibility(View.VISIBLE);
+        tv2 = findViewById(R.id.chronometer);
+        tv2.setVisibility(View.INVISIBLE);
 
         button = findViewById(R.id.button);
         button.setOnClickListener(button_listener);
@@ -62,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
             is_blank = true;
 
-            textView.setText("Essai " + counter + " de 5");
+            tv1.setText("Essai " + counter + " de 5");
 
-            chronometer.setVisibility(View.VISIBLE);
+            tv2.setVisibility(View.VISIBLE);
             button.setText(R.string.msgGrey);
             System.out.println("onclick");
 
@@ -88,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
                                 button.setBackgroundColor(getResources().getColor(R.color.buttonGrey));
                                 button.setText(R.string.msgGrey);
                                 if (counter < 6) {
-                                    chronometer.setText("0:000");
-                                    textView.setText("Essai " + counter + " de 5");
+                                    tv2.setText("0:000");
+                                    tv1.setText("Essai " + counter + " de 5");
                                 }
 
                                 System.out.println("success1111");
@@ -110,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
                                 button.setText(R.string.msgYellow);
                                 button.setBackgroundColor(getResources().getColor(R.color.buttonYellow));
 
-                                chronometer.start();
-                                chronometer.setBase(SystemClock.elapsedRealtime());
+                                chrono.start();
+                                //chronometer.setBase(SystemClock.elapsedRealtime());
                             }
                         };
 
@@ -126,9 +126,9 @@ public class MainActivity extends AppCompatActivity {
                     case -256:  // -256 = yellow
                         button.setText(R.string.msgGreen);
                         button.setBackgroundColor(getResources().getColor(R.color.buttonGreen));
-                        chronometer.stop();
+                        chrono.stop();
 
-                        long elapsed = SystemClock.elapsedRealtime() - chronometer.getBase();
+                        long elapsed = SystemClock.elapsedRealtime(); //- chronometer.getBase();
                         timerArray[counter - 1] = (double) elapsed / 1000;
 
                         System.out.println("timeArray " + counter + " - 1 = " + timerArray[counter - 1]);
@@ -182,47 +182,53 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-//    public void updateTimer(String time) {
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        });
-//    }
-//
-//    public void execute_timer() {
-//        public class Chronometer implements Runnable {
-//            public static final long MillisToMin = 60000;
-//            public static final long MillisToHour = 3600000;
-//
-//            private Context context;
-//            private long startTime;
-//
-//            private boolean misRunning;
-//
-//            public Chronometer(Context c) {
-//                context = c;
-//            }
-//
-//            public void start() {
-//                startTime = System.currentTimeMillis();
-//                misRunning = true;
-//            }
-//
-//            public void stop() {
-//                misRunning = false;
-//            }
-//
-//            @Override
-//            public void run() {
-//                while(misRunning) {
-//                    long elapsedTime = System.currentTimeMillis() - startTime;
-//                    int seconds = (int)(elapsedTime / 1000);
-//                    double millis = elapsedTime % 1000;
-//                }
-//            }
-//        }
-//    }
+    public void updateTimer(String time) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+    }
+
+
+    public class Chronometer implements Runnable {
+        public static final long MillisToMin = 60000;
+        public static final long MillisToHour = 3600000;
+
+        private Context context;
+        private long startTime;
+
+        private boolean misRunning;
+
+        public Chronometer(Context c) {
+            context = c;
+        }
+
+        public void start() {
+            startTime = System.currentTimeMillis();
+            misRunning = true;
+        }
+
+        public void stop() {
+            misRunning = false;
+        }
+
+        @Override
+        public void run() {
+            while(misRunning) {
+                long elapsedTime = System.currentTimeMillis() - startTime;
+                int seconds = (int)(elapsedTime / 1000);
+                int millis = (int)elapsedTime % 1000;
+
+                ((MainActivity)context).updateTimer(String.format(
+                        "%02d:%3d", seconds, millis
+                ));
+
+
+            }
+        }
+    }
+
 }
 
